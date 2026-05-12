@@ -4,5 +4,7 @@
 
 启用插件即开启打字机模式，禁用插件则关闭打字机模式。
 
+当前代码版本：VSCode Lite Edit主题v3.0.0。
+
 > [!WARNING]
 > 从主题VSCode Lite Edit中拆分得到，如使用主题VSCode Lite Edit请不要同时启用本插件与主题的打字机模式开关。
