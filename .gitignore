@@ -174,3 +174,6 @@ mise.local.lock
 
 # Lefthook
 .lefthook-local
+
+# scripts
+scripts
