@@ -1,0 +1,27 @@
+{
+  "name": "sy-vsce-typewriter",
+  "author": "Emptylight",
+  "url": "https://github.com/emptylight370/sy-vsce-typewriter",
+  "version": "0.1.0",
+  "minAppVersion": "3.7.0",
+  "kernels": ["all"],
+  "backends": [ "all"],
+  "frontends": ["all"],
+  "disabledInPublish": false,
+  "displayName": {
+    "default": "VSCE Typewriter",
+    "zh_CN": "VSCE 打字机模式"
+  },
+  "description": {
+    "default": "This is a typewriter plugin from theme VSCode Lite Edit",
+    "zh_CN": "这是一个来自主题VSCode Lite Edit的打字机模式插件"
+  },
+  "readme": {
+    "default": "README.md",
+    "zh_CN": "README_zh_CN.md"
+  },
+  "funding": {
+    "custom": ["https://blog.emptylight.cn/sponsor"]
+  },
+  "keywords": ["VSCE","VSCE theme","VSCE主题","VSCode Lite Edit"]
+}

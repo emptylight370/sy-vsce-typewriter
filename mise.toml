@@ -1,0 +1,6 @@
+[tools]
+lefthook = "latest"
+node = "24"
+"npm:conventional-changelog" = "latest"
+pnpm = "latest"
+prettier = "latest"
