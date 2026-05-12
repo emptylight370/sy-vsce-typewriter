@@ -1,0 +1,5 @@
+{
+  "loadPlugin": "[VSCE Typewriter] 插件加载，打字机模式启用",
+  "unloadPlugin": "[VSCE Typewriter] 插件关闭，打字机模式禁用",
+  "uninstallPlugin": "[VSCE Typewriter] 插件卸载，打字机模式禁用"
+}

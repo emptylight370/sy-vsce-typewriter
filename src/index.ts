@@ -1,0 +1,225 @@
+import { Plugin } from "siyuan";
+
+export default class VSCETypewriterPlugin extends Plugin {
+    /** 上一次滚动时间 */
+    private lastScrollTime = 0;
+    /** 最小触发间隔(ms) */
+    private SCROLL_THROTTLE_MS = 300;
+
+    /**
+     * 处理打字机模式的滚动逻辑
+     * 从光标位置向上查找最近的 [data-node-id] 块元素，并滚动到视口中央
+     */
+    private scrollToCenter(sourceElement?: HTMLElement): void {
+        // 触发前节流检查
+        const now = performance.now();
+        if (now - this.lastScrollTime < this.SCROLL_THROTTLE_MS) return;
+        this.lastScrollTime = now;
+
+        const selection = window.getSelection();
+        if (!selection || selection.rangeCount === 0) return;
+
+        const range = selection.getRangeAt(0);
+        if (!range.collapsed) return; // 有选区时不滚动
+
+        // 获取当前光标所在元素
+        let currentTargetElement: HTMLElement = sourceElement ? sourceElement : (range.startContainer as HTMLElement);
+        if (!sourceElement) {
+            // 键盘事件没传入元素
+            let node: Node | null = range.startContainer;
+            while (node && node !== document.body) {
+                if (node.nodeType === Node.ELEMENT_NODE) {
+                    currentTargetElement = node as HTMLElement;
+                    break;
+                }
+                node = node.parentNode;
+            }
+        }
+
+        // 如果点击的元素为分隔符，则跳过
+        if (currentTargetElement.classList.contains("fn__space")) return;
+        else if (currentTargetElement.classList.contains("fn__flex-1")) return;
+        // 如果点击的元素为数据库视图栏，则跳过
+        else if (currentTargetElement.classList.contains("av__views")) return;
+        // 如果点击的元素是个按钮，则跳过
+        else if (currentTargetElement.closest(".block__icon, .protyle-icons, .av__gallery-actions")) return;
+
+        // 从光标位置的容器节点向上查找最近的 [data-node-id] 元素
+        let targetElement: HTMLElement | null = currentTargetElement.closest("[data-node-id]") as HTMLElement;
+
+        if (!targetElement) return;
+
+        // ===== 表格特殊处理 =====
+        let actualTarget: HTMLElement = targetElement;
+        if (currentTargetElement.closest("table")) {
+            // 以行为目标居中
+            const tr = currentTargetElement.closest("tr");
+            if (tr) {
+                actualTarget = tr;
+            } else if (currentTargetElement.tagName === "CAPTION") {
+                // 如果点击的是表题就以表题为目标居中
+                actualTarget = currentTargetElement;
+            }
+        }
+        // ===== 表格处理结束 =====
+        // ===== 数据库特殊处理 =====
+        else if (currentTargetElement.closest(".av")) {
+            const attributeView = currentTargetElement.closest(".av") as HTMLElement;
+            let skip = false;
+
+            // 数据库的通用组件
+            if (currentTargetElement.classList.contains("av__title")) {
+                // 编辑数据库名称
+                actualTarget = currentTargetElement;
+                skip = true;
+            } else if (currentTargetElement.closest(".av__header")) {
+                // 数据库右上角的按钮，除名称之外
+                return;
+            } else if (currentTargetElement.closest(".av__group-title")) {
+                // 数据库分组一整行
+                actualTarget = currentTargetElement.closest(".av__group-title") as HTMLElement;
+                skip = true;
+            }
+
+            // 判断数据库类型
+            // 表格视图
+            if (attributeView.dataset.avType === "table" && !skip) {
+                if (
+                    // 单元格
+                    currentTargetElement.classList.contains("av__cell") ||
+                    // 单元格里面的文本
+                    currentTargetElement.classList.contains("av__celltext") ||
+                    // 单元格里面的东西
+                    currentTargetElement.parentElement?.classList.contains("av__cell") ||
+                    // 直接点中行
+                    currentTargetElement.classList.contains("av__row") ||
+                    // 每行前面的复选框
+                    currentTargetElement.closest(".av__firstcol")
+                ) {
+                    actualTarget = currentTargetElement.closest("div.av__row") as HTMLElement;
+                } else if (currentTargetElement.classList.contains("av__cursor")) {
+                    // 键盘方向键在单元格间移动
+                    const cellElement = currentTargetElement.parentElement?.querySelector(
+                        ".av__cell--select.av__cell--active",
+                    );
+                    if (cellElement) {
+                        actualTarget = (cellElement as HTMLElement).closest(".av__row") as HTMLElement;
+                    }
+                } else if (currentTargetElement.closest(".av__row--footer, .av__row--util")) {
+                    // 底部的统计
+                    // 底部的加载更多
+                    return;
+                }
+            }
+            // 卡片视图、看板视图
+            else if (
+                (attributeView.dataset.avType === "gallery" || attributeView.dataset.avType === "kanban") &&
+                !skip
+            ) {
+                if (
+                    // 单元格
+                    currentTargetElement.classList.contains("av__cell") ||
+                    // 单元格里面的文本
+                    currentTargetElement.classList.contains("av__celltext") ||
+                    // 单元格里面的东西
+                    currentTargetElement.parentElement?.classList.contains("av__cell")
+                ) {
+                    actualTarget = currentTargetElement.closest("div.av__gallery-field") as HTMLElement;
+                } else if (currentTargetElement.classList.contains("av__gallery-name")) {
+                    // 字段名
+                    actualTarget = currentTargetElement.closest("div.av__gallery-field") as HTMLElement;
+                } else if (currentTargetElement.closest(".av__gallery-cover")) {
+                    // 封面图
+                    actualTarget = currentTargetElement.closest(".av__gallery-cover") as HTMLElement;
+                } else if (
+                    // 卡片视图的空白
+                    currentTargetElement.classList.contains("av__gallery")
+                ) {
+                    if (attributeView.dataset.avType === "gallery") {
+                        // 卡片视图是行
+                        actualTarget = currentTargetElement;
+                    } else if (attributeView.dataset.avType === "kanban") {
+                        // 看板视图是列
+                        return;
+                    }
+                } else if (
+                    // 看板视图的空白
+                    currentTargetElement.classList.contains("av__kanban") ||
+                    // 看板视图的空白
+                    currentTargetElement.classList.contains("av__kanban-group")
+                ) {
+                    return;
+                }
+            }
+        }
+        // ===== 数据库处理结束 =====
+        // ===== 代码块特殊处理 =====
+        else if (currentTargetElement.closest(".hljs")) {
+            actualTarget = currentTargetElement.closest(".hljs") as HTMLElement;
+        }
+        // ===== 代码块处理结束 =====
+
+        actualTarget.scrollIntoView({ block: "center", behavior: "smooth" });
+    }
+
+    /**
+     * 键盘事件处理器
+     * 只处理方向键和 Enter 键
+     */
+    private handleKeydown(event: KeyboardEvent): void {
+        const validKeys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Enter", "Backspace"];
+        if (!validKeys.includes(event.key)) return;
+
+        // 仅在编辑器内触发
+        const target = event.target as HTMLElement;
+        if (!target?.closest(".protyle-wysiwyg")) return;
+
+        // 使用 requestAnimationFrame 确保 DOM 已更新后再计算位置
+        requestAnimationFrame(() => {
+            this.scrollToCenter();
+        });
+    }
+
+    /**
+     * 鼠标点击事件处理器
+     */
+    private handleClick(event: MouseEvent): void {
+        // 仅响应鼠标左键
+        if (event.button !== 0) return;
+
+        // 仅在编辑器内触发
+        const target = event.target as HTMLElement;
+        if (!target?.closest(".protyle-wysiwyg")) return;
+        // 如果点击的元素是引用和链接，则跳过
+        if (target.dataset.type?.split(" ").includes("block-ref") || target.dataset.type?.split(" ").includes("a"))
+            return;
+
+        // 使用 requestAnimationFrame 确保光标已定位
+        requestAnimationFrame(() => {
+            this.scrollToCenter(target);
+        });
+    }
+
+    onload(): void {
+        // 使用事件委托，在 document 上监听，但内部过滤 .protyle-wysiwyg 范围
+        document.addEventListener("keydown", this.handleKeydown, true); // 捕获阶段
+        document.addEventListener("click", this.handleClick, true); // 捕获阶段
+        console.log(this.i18n.loadPlugin);
+    }
+
+    onunload(): void {
+        document.removeEventListener("keydown", this.handleKeydown, true);
+        document.removeEventListener("click", this.handleClick, true);
+
+        this.lastScrollTime = 0;
+        console.log(this.i18n.unloadPlugin);
+    }
+
+    uninstall(): void {
+        document.removeEventListener("keydown", this.handleKeydown, true);
+        document.removeEventListener("click", this.handleClick, true);
+
+        this.lastScrollTime = 0;
+        console.log(this.i18n.uninstallPlugin);
+    }
+}

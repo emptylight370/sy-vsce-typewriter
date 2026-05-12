@@ -1,0 +1,5 @@
+{
+  "loadPlugin": "[VSCE Typewriter] Plugin loaded, enable typewriter",
+  "unloadPlugin": "[VSCE Typewriter] Plugin unloaded, disable typewriter",
+  "uninstallPlugin": "[VSCE Typewriter] Plugin uninstall, disable typewriter"
+}
