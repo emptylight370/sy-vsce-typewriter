@@ -4,3 +4,18 @@ node = "24"
 "npm:conventional-changelog" = "latest"
 pnpm = "latest"
 prettier = "latest"
+
+[deps.pnpm]
+
+[deps.lefthook]
+description = "Install lefthook hooks"
+run = "lefthook install"
+sources = ["lefthook.yml", ".lefthook", ".lefthook-local"]
+
+[tasks.changelog]
+description = "Generate changelog via git history"
+run = [
+  "conventional-changelog -i changelog.md -s -n changelog.json -k theme.json -c theme.json",
+  "prettier -w changelog.md",
+  "git add changelog.md",
+]
