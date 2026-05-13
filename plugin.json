@@ -2,7 +2,7 @@
   "name": "sy-vsce-typewriter",
   "author": "Emptylight",
   "url": "https://github.com/emptylight370/sy-vsce-typewriter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "minAppVersion": "3.4.0",
   "kernels": ["all"],
   "backends": ["all"],

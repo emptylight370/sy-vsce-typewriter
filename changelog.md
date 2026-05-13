@@ -1,3 +1,17 @@
+## [1.0.1](https://github.com/emptylight370/sy-vsce-typewriter/compare/1.0.0...1.0.1) (2026-05-13)
+
+### ⚡ Performance | 性能优化
+
+- 将最低版本号确定为支持看板的版本([9c1855e](https://github.com/emptylight370/sy-vsce-typewriter/commits/9c1855e))
+
+### 📄 Documentation | 文档
+
+- 更新提示([2e22d99](https://github.com/emptylight370/sy-vsce-typewriter/commits/2e22d99))
+
+### 🛠️ Build system | 构建系统
+
+- 将生成变更日志的工作流换成git-cliff([8745ac0](https://github.com/emptylight370/sy-vsce-typewriter/commits/8745ac0))
+
 ## 1.0.0 (2026-05-13)
 
 ### ✨ Features | 功能
