@@ -22,11 +22,11 @@ body = """
     {% endfor %}
 {% endif %}\
 {% for group, commits in commits | group_by(attribute="group") %}
-    ### {{ group | striptags | trim | upper_first }}
+    ### {{ group | striptags | trim }}
     {% for commit in commits %}
         - {% if commit.scope %}**({{ commit.scope }})** {% endif %}\
-            {{ commit.message | upper_first }} \
-            ([{{ commit.id | truncate(length=7, end="") }}](<REPO>/commits/{{ commit.id | truncate(length=7, end="") }}))\
+            {{ commit.message }} \
+            ([{{ commit.id | truncate(length=7, end="") }}](<REPO>/commit/{{ commit.id }}))\
     {% endfor %}
 {% endfor %}
 """
@@ -67,14 +67,14 @@ protect_breaking_commits = true
 # Assigns commits to groups.
 # Optionally sets the commit's scope and can decide to exclude commits from further processing.
 commit_parsers = [
-  { message = "^feat", group = "✨ Features | 功能" },
-  { message = "^fix", group = "🐛 Bug Fixes | 问题修复" },
-  { message = "^doc", group = "📄 Documentation | 文档" },
-  { message = "^perf", group = "⚡ Performance | 性能优化" },
-  { message = "^revert", group = "⏪ Reverts | 回退" },
-  { message = "^refactor", group = "🔨 Refactor | 重构" },
-  { message = "^build", group = "🛠️ Build system | 构建系统" },
-  { message = "^ci", group = "🛠️ Build system | 构建系统" },
+  { message = "^feat", group = "<!-- 0 -->✨ Features | 功能" },
+  { message = "^fix", group = "<!-- 1 -->🐛 Bug Fixes | 问题修复" },
+  { message = "^doc", group = "<!-- 2 -->📄 Documentation | 文档" },
+  { message = "^perf", group = "<!-- 3 -->⚡ Performance | 性能优化" },
+  { message = "^revert", group = "<!-- 4 -->⏪ Reverts | 回退" },
+  { message = "^refactor", group = "<!-- 5 -->🔨 Refactor | 重构" },
+  { message = "^build", group = "<!-- 6 -->🛠️ Build system | 构建系统" },
+  { message = "^ci", group = "<!-- 6 -->🛠️ Build system | 构建系统" },
   { message = "^style", skip = true },
   { message = "^chore", skip = true },
   { message = "^test", skip = true },
