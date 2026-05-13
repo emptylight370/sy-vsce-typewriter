@@ -8,3 +8,4 @@ Current code version: VSCode Lite Edit v3.0.0.
 
 > [!WARNING]
 > This plugin was extracted from the VSCode Lite Edit theme. If you are using the VSCode Lite Edit theme, do not enable both this plugin and the theme's built-in typewriter mode simultaneously.
+> Please do not use this plugin with other typewriter mode plugins or the typewriter mode of other theme.
