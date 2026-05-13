@@ -166,7 +166,7 @@ export default class VSCETypewriterPlugin extends Plugin {
      * 键盘事件处理器
      * 只处理方向键和 Enter 键
      */
-    private handleKeydown(event: KeyboardEvent): void {
+    private handleKeydown = (event: KeyboardEvent): void => {
         const validKeys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Enter", "Backspace"];
         if (!validKeys.includes(event.key)) return;
 
@@ -178,12 +178,12 @@ export default class VSCETypewriterPlugin extends Plugin {
         requestAnimationFrame(() => {
             this.scrollToCenter();
         });
-    }
+    };
 
     /**
      * 鼠标点击事件处理器
      */
-    private handleClick(event: MouseEvent): void {
+    private handleClick = (event: MouseEvent): void => {
         // 仅响应鼠标左键
         if (event.button !== 0) return;
 
@@ -198,7 +198,7 @@ export default class VSCETypewriterPlugin extends Plugin {
         requestAnimationFrame(() => {
             this.scrollToCenter(target);
         });
-    }
+    };
 
     onload(): void {
         // 使用事件委托，在 document 上监听，但内部过滤 .protyle-wysiwyg 范围
