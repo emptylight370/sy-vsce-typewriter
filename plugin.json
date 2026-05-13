@@ -2,10 +2,10 @@
   "name": "sy-vsce-typewriter",
   "author": "Emptylight",
   "url": "https://github.com/emptylight370/sy-vsce-typewriter",
-  "version": "0.1.0",
-  "minAppVersion": "3.7.0",
+  "version": "1.0.0",
+  "minAppVersion": "3.0.0",
   "kernels": ["all"],
-  "backends": [ "all"],
+  "backends": ["all"],
   "frontends": ["all"],
   "disabledInPublish": false,
   "displayName": {
@@ -23,5 +23,5 @@
   "funding": {
     "custom": ["https://blog.emptylight.cn/sponsor"]
   },
-  "keywords": ["VSCE","VSCE theme","VSCE主题","VSCode Lite Edit"]
+  "keywords": ["VSCE", "VSCE theme", "VSCE主题", "VSCode Lite Edit"]
 }
