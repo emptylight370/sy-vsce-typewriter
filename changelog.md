@@ -12,7 +12,7 @@
 
 - 将生成变更日志的工作流换成git-cliff ([8745ac0](https://github.com/emptylight370/sy-vsce-typewriter/commit/8745ac039e1e5962a3dc03f14d3710ba79762d43))
 
-## 1.0.0 (2026-05-13)
+## [1.0.0](https://github.com/emptylight370/sy-vsce-typewriter/compare/0bf1f36392e777518291aebc77b54aa3814c47b1...1.0.0) (2026-05-13)
 
 ### ✨ Features | 功能
 
