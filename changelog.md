@@ -1,3 +1,19 @@
+## [1.0.2](https://github.com/emptylight370/sy-vsce-typewriter/compare/1.0.1...1.0.2) (2026-05-14)
+
+### ✨ Features | 功能
+
+- Sync from theme 3.0.0 ([0a69305](https://github.com/emptylight370/sy-vsce-typewriter/commit/0a69305f4842a9224fbadc0e0825afe20658cd28))
+
+### 📄 Documentation | 文档
+
+- 在信息与哈希之间添加空格 ([25dba1b](https://github.com/emptylight370/sy-vsce-typewriter/commit/25dba1bbc33cacf40583c09692a14b93344e2267))
+- 修正变更日志的类别排序 ([5693c04](https://github.com/emptylight370/sy-vsce-typewriter/commit/5693c04f4fc87a24d0a8d973355f3a3888ee0db2))
+
+### 🛠️ Build system | 构建系统
+
+- 将获取版本号的方法换成PowerShell内置方法 ([e660552](https://github.com/emptylight370/sy-vsce-typewriter/commit/e66055229d746a2f7ba4fd2230312c1e0977948b))
+- **(changelog)** 生成首个版本的链接 ([a107c0b](https://github.com/emptylight370/sy-vsce-typewriter/commit/a107c0be23b03bf46b73c351297adfb296584e9c))
+
 ## [1.0.1](https://github.com/emptylight370/sy-vsce-typewriter/compare/1.0.0...1.0.1) (2026-05-13)
 
 ### 📄 Documentation | 文档
